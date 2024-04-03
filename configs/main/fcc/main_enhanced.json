@@ -1,0 +1,22 @@
+{
+    "accumulated_batch_size": 8,
+    "batch_size": 10,
+    "early_stop_patience": 5,
+    "epochs": 40,
+    "eval_model_path": "outputs/main/fcc/enhanced/best_model/AD_crossencoder_best_model",
+    "event_encoder_model": "models/fcc_events_seed5_original/candidate_generator_best_model",
+    "gpu_num": 0,
+    "lr": 1e-05,
+    "max_grad_norm": 1.0,
+    "momentum": 0,
+    "optimizer": "adam",
+    "oracle": false,
+    "training_dataset": "fcc",
+    "test_dataset": "fcc",
+    "train_path": "retrieved_data/main_exp/fcc/train/enhanced/train_aug.csv",
+    "dev_path": "feature_sets/fcc/dev_data",
+    "test_path": "feature_sets/fcc/test_data",
+    "warmup_proportion": 0.1,
+    "weight_decay": 0,
+    "window_size": 3
+}
