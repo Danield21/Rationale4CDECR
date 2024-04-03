@@ -1,0 +1,76 @@
+Training with CUDA
+Loading fixed dev set
+Loading fixed test set
+tensor(0.5634)
+Pairwise Accuracy: 0.798457
+977
+11101
+Alternate = Recall: 0.699610 Precision: 0.831738
+Recall: 0.831738 Precision: 0.718986 F1: 0.771263
+F1 Improved Saving Model
+Pairwise Accuracy: 0.836728
+977
+12509
+Alternate = Recall: 0.778650 Precision: 0.826021
+Recall: 0.826021 Precision: 0.799562 F1: 0.812576
+F1 Improved Saving Model
+Pairwise Accuracy: 0.814506
+977
+13293
+Alternate = Recall: 0.782279 Precision: 0.831347
+Recall: 0.831347 Precision: 0.804079 F1: 0.817486
+F1 Improved Saving Model
+Pairwise Accuracy: 0.829321
+977
+13731
+Alternate = Recall: 0.808397 Precision: 0.807329
+Recall: 0.807329 Precision: 0.839300 F1: 0.823004
+F1 Improved Saving Model
+Pairwise Accuracy: 0.852778
+977
+13881
+Alternate = Recall: 0.820212 Precision: 0.817423
+Recall: 0.817423 Precision: 0.847876 F1: 0.832371
+F1 Improved Saving Model
+Pairwise Accuracy: 0.832407
+977
+14086
+Alternate = Recall: 0.787473 Precision: 0.808211
+Recall: 0.808211 Precision: 0.817112 F1: 0.812637
+Pairwise Accuracy: 0.856173
+977
+14287
+Alternate = Recall: 0.806274 Precision: 0.849405
+Recall: 0.849405 Precision: 0.831185 F1: 0.840196
+F1 Improved Saving Model
+Pairwise Accuracy: 0.831790
+977
+14374
+Alternate = Recall: 0.786687 Precision: 0.820554
+Recall: 0.820554 Precision: 0.818368 F1: 0.819460
+Pairwise Accuracy: 0.827161
+977
+14407
+Alternate = Recall: 0.797771 Precision: 0.809841
+Recall: 0.809841 Precision: 0.830637 F1: 0.820107
+Pairwise Accuracy: 0.825309
+977
+14437
+Alternate = Recall: 0.774865 Precision: 0.808899
+Recall: 0.808899 Precision: 0.807723 F1: 0.808311
+Pairwise Accuracy: 0.837654
+977
+14449
+Alternate = Recall: 0.819315 Precision: 0.818189
+Recall: 0.818189 Precision: 0.856462 F1: 0.836888
+Pairwise Accuracy: 0.818210
+977
+14449
+Alternate = Recall: 0.812142 Precision: 0.778161
+Recall: 0.778161 Precision: 0.847230 F1: 0.811228
+Pairwise Accuracy: 0.810494
+977
+14970
+Alternate = Recall: 0.781598 Precision: 0.805840
+Recall: 0.805840 Precision: 0.814208 F1: 0.810002
+Early Stopping

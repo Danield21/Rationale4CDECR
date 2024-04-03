@@ -1,0 +1,15 @@
+Training with CUDA
+Loading fixed dev set
+Loading fixed test set
+[29, 20, 32, 36, 23, 44, 24, 24, 30, 64, 48, 34, 9, 38, 28, 30, 39, 68, 26, 17, 32, 8, 12, 35, 22, 75, 35, 18, 6, 24, 18, 9, 42, 9]
+1008
+38930
+tensor(0.5915)
+Pairwise Accuracy: 0.843035
+1008
+9659
+saving clusters, inv_clusters, model_clusters, gold_clusters, gold_map, model_map, gold_sets, model_sets...
+Saved!
+Alternate = Recall: 0.821320 Precision: 0.848460
+Recall: 0.848460 Precision: 0.867518 F1: 0.857883
+F1 Improved Saving Model

@@ -1,0 +1,73 @@
+Training with CUDA
+Loading fixed dev set
+Loading fixed test set
+tensor(0.4718)
+Pairwise Accuracy: 0.796780
+1245
+17100
+Alternate = Recall: 0.748313 Precision: 0.729650
+Recall: 0.729650 Precision: 0.748313 F1: 0.738864
+F1 Improved Saving Model
+Pairwise Accuracy: 0.861401
+1245
+17849
+Alternate = Recall: 0.903167 Precision: 0.755441
+Recall: 0.755441 Precision: 0.903167 F1: 0.822725
+F1 Improved Saving Model
+Pairwise Accuracy: 0.860313
+1245
+22071
+Alternate = Recall: 0.788247 Precision: 0.831018
+Recall: 0.831018 Precision: 0.788247 F1: 0.809068
+Pairwise Accuracy: 0.858790
+1245
+22847
+Alternate = Recall: 0.803128 Precision: 0.826506
+Recall: 0.826506 Precision: 0.803128 F1: 0.814650
+Pairwise Accuracy: 0.857702
+1245
+25069
+Alternate = Recall: 0.736560 Precision: 0.864680
+Recall: 0.864680 Precision: 0.736560 F1: 0.795494
+Pairwise Accuracy: 0.835292
+1245
+25069
+Alternate = Recall: 0.932628 Precision: 0.693925
+Recall: 0.693925 Precision: 0.932628 F1: 0.795761
+Pairwise Accuracy: 0.880113
+1245
+25317
+Alternate = Recall: 0.851883 Precision: 0.811147
+Recall: 0.811147 Precision: 0.851883 F1: 0.831016
+F1 Improved Saving Model
+Pairwise Accuracy: 0.864882
+1245
+25403
+Alternate = Recall: 0.813760 Precision: 0.805695
+Recall: 0.805695 Precision: 0.813760 F1: 0.809707
+Pairwise Accuracy: 0.865100
+1245
+25579
+Alternate = Recall: 0.810194 Precision: 0.815145
+Recall: 0.815145 Precision: 0.810194 F1: 0.812662
+Pairwise Accuracy: 0.847694
+1245
+26519
+Alternate = Recall: 0.806349 Precision: 0.802832
+Recall: 0.802832 Precision: 0.806349 F1: 0.804587
+Pairwise Accuracy: 0.847258
+1245
+26896
+Alternate = Recall: 0.784731 Precision: 0.802736
+Recall: 0.802736 Precision: 0.784731 F1: 0.793632
+Pairwise Accuracy: 0.849217
+1245
+27343
+Alternate = Recall: 0.838007 Precision: 0.797626
+Recall: 0.797626 Precision: 0.838007 F1: 0.817318
+Pairwise Accuracy: 0.851175
+1245
+28329
+Alternate = Recall: 0.810583 Precision: 0.809319
+Recall: 0.809319 Precision: 0.810583 F1: 0.809951
+Early Stopping

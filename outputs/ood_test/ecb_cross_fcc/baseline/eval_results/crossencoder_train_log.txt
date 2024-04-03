@@ -1,0 +1,8 @@
+DEBUG:matplotlib:matplotlib data path: /opt/conda/lib/python3.10/site-packages/matplotlib/mpl-data
+DEBUG:matplotlib:CONFIGDIR=/root/.config/matplotlib
+DEBUG:matplotlib:interactive is False
+DEBUG:matplotlib:platform is linux
+DEBUG:matplotlib:CACHEDIR=/root/.cache/matplotlib
+DEBUG:matplotlib.font_manager:Using fontManager instance from /root/.cache/matplotlib/fontlist-v330.json
+INFO:root:Loading training and dev data...
+INFO:root:Training and dev data have been loaded.

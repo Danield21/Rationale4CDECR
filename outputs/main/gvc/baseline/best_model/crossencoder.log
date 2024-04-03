@@ -1,0 +1,47 @@
+Training with CUDA
+0
+save dev_pairs successfully!
+tensor(0.5634)
+Pairwise Accuracy: 0.812346
+977
+12340
+Alternate = Recall: 0.747076 Precision: 0.835790
+Recall: 0.835790 Precision: 0.763822 F1: 0.798187
+F1 Improved Saving Model
+Pairwise Accuracy: 0.842901
+977
+13143
+Alternate = Recall: 0.816524 Precision: 0.820414
+Recall: 0.820414 Precision: 0.847461 F1: 0.833718
+F1 Improved Saving Model
+Pairwise Accuracy: 0.825617
+977
+14119
+Alternate = Recall: 0.747851 Precision: 0.855927
+Recall: 0.855927 Precision: 0.769184 F1: 0.810241
+Pairwise Accuracy: 0.837037
+977
+14217
+Alternate = Recall: 0.798346 Precision: 0.825761
+Recall: 0.825761 Precision: 0.826495 F1: 0.826128
+Pairwise Accuracy: 0.834877
+977
+14440
+Alternate = Recall: 0.809730 Precision: 0.813775
+Recall: 0.813775 Precision: 0.840319 F1: 0.826834
+Pairwise Accuracy: 0.836728
+977
+14747
+Alternate = Recall: 0.833054 Precision: 0.771960
+Recall: 0.771960 Precision: 0.862637 F1: 0.814784
+Pairwise Accuracy: 0.827469
+977
+14985
+Alternate = Recall: 0.801729 Precision: 0.803870
+Recall: 0.803870 Precision: 0.835093 F1: 0.819184
+Pairwise Accuracy: 0.851543
+977
+15007
+Alternate = Recall: 0.812578 Precision: 0.814383
+Recall: 0.814383 Precision: 0.847182 F1: 0.830459
+Early Stopping

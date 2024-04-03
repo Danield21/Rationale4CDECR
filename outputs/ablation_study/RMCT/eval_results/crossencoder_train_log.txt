@@ -1,0 +1,9 @@
+DEBUG:matplotlib:matplotlib data path: /opt/conda/lib/python3.10/site-packages/matplotlib/mpl-data
+DEBUG:matplotlib:CONFIGDIR=/root/.config/matplotlib
+DEBUG:matplotlib:interactive is False
+DEBUG:matplotlib:platform is linux
+DEBUG:matplotlib:CACHEDIR=/root/.cache/matplotlib
+DEBUG:matplotlib.font_manager:font search path [PosixPath('/opt/conda/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf'), PosixPath('/opt/conda/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/afm'), PosixPath('/opt/conda/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts')]
+INFO:matplotlib.font_manager:generated new fontManager
+INFO:root:Loading training and dev data...
+INFO:root:Training and dev data have been loaded.

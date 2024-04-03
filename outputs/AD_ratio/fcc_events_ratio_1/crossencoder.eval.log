@@ -1,0 +1,15 @@
+Training with CUDA
+Loading fixed dev set
+Loading fixed test set
+[1074]
+1074
+1153476
+tensor(0.6030)
+Pairwise Accuracy: 0.753971
+1074
+120957
+saving clusters, inv_clusters, model_clusters, gold_clusters, gold_map, model_map, gold_sets, model_sets...
+Saved!
+Alternate = Recall: 0.680593 Precision: 0.610680
+Recall: 0.610680 Precision: 0.680593 F1: 0.643744
+F1 Improved Saving Model

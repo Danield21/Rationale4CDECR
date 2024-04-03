@@ -1,0 +1,96 @@
+Training with CUDA
+Loading fixed dev set
+Loading fixed test set
+tensor(0.4718)
+Pairwise Accuracy: 0.709131
+1245
+8181
+Alternate = Recall: 0.924007 Precision: 0.541263
+Recall: 0.541263 Precision: 0.924007 F1: 0.682647
+F1 Improved Saving Model
+Pairwise Accuracy: 0.830651
+1245
+14406
+Alternate = Recall: 0.794614 Precision: 0.746857
+Recall: 0.746857 Precision: 0.794614 F1: 0.769996
+F1 Improved Saving Model
+Pairwise Accuracy: 0.879998
+1245
+15098
+Alternate = Recall: 0.903273 Precision: 0.788383
+Recall: 0.788383 Precision: 0.903273 F1: 0.841927
+F1 Improved Saving Model
+Pairwise Accuracy: 0.879781
+1245
+16345
+Alternate = Recall: 0.824507 Precision: 0.836283
+Recall: 0.836283 Precision: 0.824507 F1: 0.830354
+Pairwise Accuracy: 0.894129
+1245
+16662
+Alternate = Recall: 0.870363 Precision: 0.833046
+Recall: 0.833046 Precision: 0.870363 F1: 0.851295
+F1 Improved Saving Model
+Pairwise Accuracy: 0.900215
+1245
+16927
+Alternate = Recall: 0.882040 Precision: 0.841374
+Recall: 0.841374 Precision: 0.882040 F1: 0.861227
+F1 Improved Saving Model
+Pairwise Accuracy: 0.896520
+1245
+16990
+Alternate = Recall: 0.865628 Precision: 0.845695
+Recall: 0.845695 Precision: 0.865628 F1: 0.855545
+Pairwise Accuracy: 0.895868
+1245
+17046
+Alternate = Recall: 0.876382 Precision: 0.840468
+Recall: 0.840468 Precision: 0.876382 F1: 0.858050
+Pairwise Accuracy: 0.900433
+1245
+17127
+Alternate = Recall: 0.884279 Precision: 0.833345
+Recall: 0.833345 Precision: 0.884279 F1: 0.858057
+Pairwise Accuracy: 0.894563
+1245
+17183
+Alternate = Recall: 0.893223 Precision: 0.801083
+Recall: 0.801083 Precision: 0.893223 F1: 0.844648
+Pairwise Accuracy: 0.898694
+1245
+17401
+Alternate = Recall: 0.881943 Precision: 0.847334
+Recall: 0.847334 Precision: 0.881943 F1: 0.864293
+F1 Improved Saving Model
+Pairwise Accuracy: 0.900216
+1245
+17468
+Alternate = Recall: 0.883118 Precision: 0.819094
+Recall: 0.819094 Precision: 0.883118 F1: 0.849902
+Pairwise Accuracy: 0.894563
+1245
+17741
+Alternate = Recall: 0.846280 Precision: 0.855997
+Recall: 0.855997 Precision: 0.846280 F1: 0.851111
+Pairwise Accuracy: 0.897172
+1245
+17772
+Alternate = Recall: 0.890755 Precision: 0.823568
+Recall: 0.823568 Precision: 0.890755 F1: 0.855844
+Pairwise Accuracy: 0.888476
+1245
+18051
+Alternate = Recall: 0.839690 Precision: 0.819566
+Recall: 0.819566 Precision: 0.839690 F1: 0.829506
+Pairwise Accuracy: 0.904129
+1245
+18064
+Alternate = Recall: 0.894241 Precision: 0.796806
+Recall: 0.796806 Precision: 0.894241 F1: 0.842717
+Pairwise Accuracy: 0.877607
+1245
+18192
+Alternate = Recall: 0.817245 Precision: 0.817136
+Recall: 0.817136 Precision: 0.817245 F1: 0.817191
+Early Stopping
