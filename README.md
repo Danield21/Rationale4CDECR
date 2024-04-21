@@ -6,3 +6,5 @@ The code implementation and data for "A Rationale-centric Counterfactual Data Au
 Our implementation is based on  [event_entity_coref_ecb_plus](https://github.com/Helw150/event_entity_coref_ecb_plus) repository.
 
 ![](alg_pipeline.png)
+
+Thank you for your interest in our work. We are organizing the code and data, and will release them soon!
