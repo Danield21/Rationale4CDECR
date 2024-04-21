@@ -1,7 +1,5 @@
-import nltk
-from nltk.stem import PorterStemmer,WordNetLemmatizer
+from nltk.stem import PorterStemmer
 from thefuzz import fuzz
-import ast
 
 def stemize(sentence):
     ''' Stemize the given sentence
@@ -18,11 +16,12 @@ def stemize(sentence):
 def get_trigger_1(x):
     ''' Extract trigger_1 from text_1, using with df.apply() 
         Inputs: 
-            x[0]: complete sentence of the first text snippt
-            x[1]: the start offset of the head lemma of trigger_1
-            x[2]: the start offset of the head lemma of trigger_2
+            x[0]: text_1, complete sentence of the first text snippt
+            x[1]: trigger_1_abs_start, the start offset of the head lemma of trigger_1
+            x[2]: trigger_1_abs_end, the start offset of the head lemma of trigger_2
         Outputs: full head lemma of trigger_1
-    >>> ecb_aug['trigger_1'] = ecb_aug[['text_1','trigger_1_abs_start','trigger_1_abs_end']].apply(get_trigger_1,axis=1)
+        Example:
+        >>> ecb_aug['extracted_trigger_1'] = ecb_aug[['text_1','trigger_1_abs_start','trigger_1_abs_end']].apply(get_trigger_1,axis=1)
     '''
     text1=x[0]
     start = x[1]
@@ -30,6 +29,25 @@ def get_trigger_1(x):
     text1_list = text1.split(' ')
     trigger_1 = ' '.join(text1_list[start:end+1])
     return trigger_1
+
+def get_trigger_2(x):
+    ''' Extract trigger_2 from text_2, using with df.apply() 
+        Inputs: 
+            x[0]: text_1, the complete first text snippet with prefix_1, text_1 and suffix_1
+            x[1]: text_2, the complete second text snippet with prefix_2, text_2 and suffix_2
+            x[2]: trigger_2_abs_start, the absolute start offset of the head lemma of trigger_2
+            x[3]: trigger_2_abs_end, the absolute end offset of the head lemma of trigger_2
+        Outputs: full head lemma of trigger_2
+        Example:
+        >>> ecb_aug['extracted_trigger_2'] = ecb_aug[['text_1', 'text_2', 'trigger_2_abs_start','trigger_2_abs_end']].apply(get_trigger_2,axis=1)
+    '''
+    text1=x[0]
+    text2=x[1]
+    start = x[2]
+    end = x[3]
+    text1_text2_list = text1.split(' ') + text2.split(' ')
+    trigger_2 = ' '.join(text1_text2_list[start:end+1])
+    return trigger_2
 
 def get_fuzz_ratio(x):
     '''Calculate the fuzz ratio between two strings, using with df.apply() 
@@ -55,6 +73,8 @@ def coref_avg_lexical_similarity(df, data_type):
        Outputs:
             Original dataset with a new column 'triggers_lexical_similarity'
             Print lexical similarity information for coreferential cases of the dataset
+        Example:
+        >>> ecb_ORI = coref_avg_lexical_similarity(ecb_ORI, 'ORI')
     """
     if 'triggers_lexical_similarity' not in df.keys():
         assert 'trigger_1' in df.keys() and 'trigger_2' in df.keys(), 'plz check the dataset, trigger_1 or trigger_2 is missing'
@@ -67,6 +87,5 @@ def coref_avg_lexical_similarity(df, data_type):
     lex_sim_proportion = len(df[(df.label == 1.0)&(df.triggers_lexical_similarity>=80)])/len(coref_data)
     print(f'Avg triggers lexical similarity for {data_type} coreferential cases is: {avg_lex_sim:.2f}, lexically-similar ones takes {100*lex_sim_proportion:.2f}%.')
     return df
-
 
 
