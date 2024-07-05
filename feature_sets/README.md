@@ -1,0 +1,28 @@
+# File organization in the dir
+```
+Rationale4CDECR/feature_sets/
+├── all_sents/                              [ECB+ preprocessed results]               
+│   ├── build_features_config.json          [The config to preprocess ECB+]   
+│   ├── training_data                       [The training corpus in pickle file]
+│   ├── dev_data                            [The dev corpus in pickle file]
+│   ├── test_data                           [The test corpus in pickle file]   
+│   ├── train_statistics.txt                [Statistics for the training corpus]
+│   ├── dev_statistics.txt                  [Statistics for the dev corpus]
+│   └── test_statistics.txt                 [Statistics for the test corpus]
+├── fcc/                                    [FCC preprocessed results]               
+│   ├── build_features_config.json          [The config to preprocess FCC]   
+│   ├── training_data                       [The training corpus in pickle file]
+│   ├── dev_data                            [The dev corpus in pickle file]
+│   ├── test_data                           [The test corpus in pickle file]   
+│   ├── train_statistics.txt                [Statistics for the training corpus]
+│   ├── dev_statistics.txt                  [Statistics for the dev corpus]
+│   └── test_statistics.txt                 [Statistics for the test corpus]
+├── gvc/                                    [GVC preprocessed results]               
+│   ├── build_features_config.json          [The config to preprocess GVC]   
+│   ├── training_data                       [The training corpus in pickle file]
+│   ├── dev_data                            [The dev corpus in pickle file]
+│   ├── test_data                           [The test corpus in pickle file]   
+│   ├── train_statistics.txt                [Statistics for the training corpus]
+│   ├── dev_statistics.txt                  [Statistics for the dev corpus]
+│   └── test_statistics.txt                 [Statistics for the test corpus]
+```

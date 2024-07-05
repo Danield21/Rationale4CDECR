@@ -1,0 +1,9 @@
+{
+    "dataset_path":"./feature_sets/all_sents/dev_data",
+    "encoder_model_path":"./models/ecb_events_seed5_original/candidate_generator_best_model",
+    "events":true,
+    "mention_pairs_num":5,
+    "remove_singletons":false,
+    "add_wd_pairs":false,
+    "all_positives":false
+}
