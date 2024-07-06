@@ -13,9 +13,8 @@ A bi-encoder can be trained for event embedding in a latent semantic space where
 ## 3. Capture nearest-K mention pairs.   
 According the event embedding, we can retrieve the nearest-K neighbours for each event mention in the training/dev/test corpus to construct the pairwise dataset to train the cross-encoder classifer as a coreference scorer. Aligned with [the baseline work](https://aclanthology.org/2021.emnlp-main.106.pdf), we set K as 15(train)/5(dev)/5(test) for main experiments, and 5(train)/5(dev)/5(test) for other experiments. Please refer to:
 ```
-
+bash run_sh/data_prepare/retrieve_mention_pairs.sh
 ```
-
 
 
 ## 4. Construct augmented data
