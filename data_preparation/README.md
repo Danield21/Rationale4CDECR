@@ -16,7 +16,12 @@ According the event embedding, we can retrieve the nearest-K neighbours for each
 bash ../run_sh/data_prepare/retrieve_mention_pairs.sh
 ```
 
+## 4. Interact with the LLM
+Based on alg. 1 in the paper, we interact with LLMs to generate materials for data augmentation. Accourding to the coreference of the original mention pair $MP=(m_1, m_2)$, we design correspounding counterfactual augmented data (CAD) to enhance the performance of  cross-encoder classifier.
+- If mentions in $MP$ are coreferential, we let LLM generate some non-coreferential event mentions to $m_1$.
+- If mentions in $MP$ are non-coreferential, we let LLM generate some coreferential event mentions to $m_1$. Also, we paraphrase the prefix and suffix discourse of $m_1$.   
 
-## 4. Construct augmented data
-  - Based on alg. 1 in the paper, we interact with LLMs to generate materials for data augmentation.
-  -  Consolidate generated materials to obtain augmented data.
+
+
+## 5. Construct augmented data
+Consolidate generated materials to obtain augmented data.
