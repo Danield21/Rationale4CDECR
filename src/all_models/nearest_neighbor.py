@@ -18,34 +18,12 @@ for pack in os.listdir("src"):
 from classes import *
 
 tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-
-
-# print('Loading fixed dev set')
-# ecb_dev_set=pd.read_pickle('data_split/pairs_generated_dev_data.pkl')
-# print('Loading fixed test set')
-# ecb_test_set=pd.read_pickle('data_split/pairs_generated_test_data.pkl')
-
-# nn_generated_fixed_eval_pairs={
-#     'ecb':
-#         {
-#             'dev':ecb_dev_set,
-#             'test':ecb_test_set
-#             },
-#     'fcc':
-#         {
-#             'dev':None,
-#             'test':None
-#         },
-#     'gvc':
-#         {
-#             'dev':None,
-#             'test':None
-#         }
-# }
-
-
-
 def dataset_to_docs(dataset):
+    '''In a dataset, we have some topics;
+       each topic has some documents;
+       This func origanize all documents 
+       of the dataset together in a list named as `docs'. 
+    '''
     docs = [
         document for topic in dataset.topics.values()
         for document in topic.docs.values()
@@ -54,6 +32,8 @@ def dataset_to_docs(dataset):
 
 
 def generate_singleton_set(docs):
+    '''Organize singletons from docs in a set.
+    '''
     clusters = {}
     for doc in docs:
         sentences = doc.get_sentences()
@@ -71,6 +51,9 @@ def generate_singleton_set(docs):
 
 
 def build_mention_reps(docs, model, events=True, remove_singletons=False):
+    '''Embed events using the well-trained bi-encoder model which encodes 
+    sufficient contextual information.
+    '''
     processed_dataset = []
     labels = []
     mentions = []
@@ -83,39 +66,40 @@ def build_mention_reps(docs, model, events=True, remove_singletons=False):
         sentences = doc.get_sentences()
         for sentence_id in sentences:
             sentence = sentences[sentence_id]
-            #得到该sentence中的所有event mentions
+            #Get all event mentions in a sentence
             sentence_mentions = sentence.gold_event_mentions if events else sentence.gold_entity_mentions
             if len(sentence_mentions) == 0:
                 continue
-            #对于某个事件mention的表征集成该mention前5句和后5句的信息
+            #Intergrate prefix discourse (previous 5 sentences) and suffix discourse (after 5 sentences) 
+            # of the concerned event mention 
             lookback = max(0, sentence_id - 5)
             lookforward = min(sentence_id + 5, max(sentences.keys())) + 1
             tokenization_input = ([
                 sentences[_id] for _id in range(lookback, lookforward)
-            ], sentence_id - lookback)#构成了一个11句左右的句子discourse
+            ], sentence_id - lookback) # get a discourse with around 11 sentences
+            # Tokenize sentences in the discourse
             tokenized_sentence, tokenization_mapping, sent_offset = tokenize_and_map(
                 tokenization_input[0], tokenizer, tokenization_input[1])
-            #tokenized_sentence为roberta的tokenizer分词后得到的embedding
-            #通过训练好的candidate generator model获取对应的sentence embedding
+            #Get mention-sentence representation 
             sentence_vec = model.get_sentence_vecs(
                 torch.tensor([tokenized_sentence]).to(model.device))
-            for mention in sentence_mentions:#遍历该sentence_mentions中的所有mention
+            for mention in sentence_mentions:
                 #if remove_singletons and mention in singleton_set:
                 if remove_singletons and mention.mention_id in singleton_set:
                     continue
-                #得到trigger的start_piece
+                #the start_piece of the event trigger
                 start_piece = torch.tensor([[
                     tokenization_mapping[sent_offset + mention.start_offset][0]
                 ]])
-                #得到trigger的end_piece
+                #the end_piece of the event trigger
                 end_piece = torch.tensor([[
                     tokenization_mapping[sent_offset + mention.end_offset][-1]
                 ]])
-                #input sentence vec, trigger start piece, trigger end piece.得到event mention embedding
+                #Construct event embedding which bewares of its trigger
                 mention_rep = model.get_mention_rep(
                     sentence_vec, start_piece.to(model.device),
                     end_piece.to(model.device))
-                processed_dataset.append(mention_rep.detach().cpu().numpy()[0])#将gpu处理好的mention_rep,传到spu中
+                processed_dataset.append(mention_rep.detach().cpu().numpy()[0])
                 labels.append((mention.mention_str, mention.gold_tag))
                 mentions.append(mention)
 
@@ -152,7 +136,7 @@ def build_cluster_reps(clusters, model, docs):
 
 def mean_reciprocal_rank(rs):
     '''
-    平均倒数排序值：某一个mention的邻域内聚类情况越好，rank指越接近低；否则，rank指越接近1（5个neighbour全错，则rank=1）
+    Measuring candidates ranking results 
     '''
     #np.asarray(r).nonzero()得到r中所有非0元素的索引
     rs = (np.asarray(r).nonzero()[0] for r in rs)
@@ -168,10 +152,7 @@ def precision_at_k(r, k):
 
 
 def average_precision(r):
-    '''
-    input：某个mention邻域内的预测结果 r
-    '''
-    r = np.asarray(r) != 0 #将r中的1-->true; 0-->false
+    r = np.asarray(r) != 0 #1-->true; 0-->false
     out = [precision_at_k(r, k + 1) for k in range(r.size) if r[k]]
     if not out:
         return 0.
@@ -212,11 +193,12 @@ def create_mention_index(docs, model):
     index.add(vectors)
     return index
 
-#-----------------------------------------------------------------------------#
-#基于faiss
+#Based on faiss
 #np.random.seed(5)
 #faiss.omp_set_num_threads(1)
-def nn_generate_pairs(data, model, k=10, events=True, remove_singletons=False):
+def nn_generate_pairs(data, model, k=5, events=True, remove_singletons=False):
+    ''' Retrieve K-nearest mention pairs in data
+    '''
     vectors, labels, mentions = build_mention_reps(
         data, model, events, remove_singletons=remove_singletons)
     index = faiss.IndexFlatIP(1536)
@@ -231,188 +213,9 @@ def nn_generate_pairs(data, model, k=10, events=True, remove_singletons=False):
                 nearest_neighbors.add(frozenset([mention, mentions[j]]))
         pairs = pairs | nearest_neighbors
     return pairs
-
-#基于numpy
-def nn_generate_pairs_numpy(data, model, k=10, events=True, remove_singletons=False):
-    vectors, labels, mentions = build_mention_reps(
-        data, model, events, remove_singletons=remove_singletons)
-    #index = faiss.IndexFlatIP(1536)
-    #index.add(vectors)
-    #D, I = index.search(vectors, k + 1)
-    similarity_matrix = np.dot(vectors, vectors.T)
-    sorted_neighbor_indexes = np.argsort(-similarity_matrix)[:,:k+1]
-    pairs = set()
-    for i, mention in enumerate(mentions):
-        nearest_neighbor_indexes = sorted_neighbor_indexes[i]
-        nearest_neighbors = set()
-        for nn_index, j in enumerate(nearest_neighbor_indexes):
-            if mention.mention_id != mentions[j].mention_id:
-                nearest_neighbors.add(frozenset([mention, mentions[j]]))
-        pairs = pairs | nearest_neighbors
-    return pairs
-
-# def nn_generate_pairs(data, model, k=10, events=True, remove_singletons=False):
-#     '''
-#     以set container存放各个mention的nearest_neighbors
-#     '''
-#     vectors, labels, mentions = build_mention_reps(
-#         data, model, events, remove_singletons=remove_singletons)
-#     index = faiss.IndexFlatIP(1536)
-#     index.add(vectors)
-#     D, I = index.search(vectors, k + 1)
-#     pairs = set()
-#     for i, mention in enumerate(mentions):
-#         nearest_neighbor_indexes = I[i]
-#         nearest_neighbors = set()
-#         for nn_index, j in enumerate(nearest_neighbor_indexes):
-#             if mention.mention_id != mentions[j].mention_id:
-#                 nearest_neighbors.add(frozenset([mention, mentions[j]]))
-#         pairs = pairs | nearest_neighbors
-#     return pairs, mentions
-
-def nn_generate_mention_neighbors(
-    data,
-    model,
-    k=10,
-    events=True,
-    remove_singletons=False
-):
-    '''
-    以list container存放各个mention的nearest_neighbors
-    '''
-    vectors, labels, mentions = build_mention_reps(
-        data, model, events, remove_singletons=remove_singletons
-    )
-    index = faiss.IndexFlatIP(1536)
-    index.add(vectors)
-    D, I = index.search(vectors, k + 1)
-    pairs = list()
-    for i, mention in enumerate(mentions):
-        nearest_neighbor_indexes = I[i]
-        nearest_neighbors = list()
-        for nn_index, j in enumerate(nearest_neighbor_indexes):
-            if mention.mention_id != mentions[j].mention_id:
-                nearest_neighbors.append([mention, mentions[j]])
-        pairs.extend(nearest_neighbors)
-    return pairs, mentions
-
-
-
-# def nn_generate_pairs(data, model, k=10, events=True, remove_singletons=False):
-#     vectors, labels, mentions = build_mention_reps(
-#         data, model, events, remove_singletons=remove_singletons)
-#     index = faiss.IndexFlatIP(1536)
-#     index.add(vectors)
-#     D, I = index.search(vectors, k + 1)
-#     #pairs = set()
-#     pairs=[]
-#     for i, mention in enumerate(mentions):
-#         nearest_neighbor_indexes = I[i]
-#         #nearest_neighbors = set()
-#         nearest_neighbors = []
-#         #print('Here is {}_th mention'.format(i))
-#         #neighbour_num=0
-#         for nn_index, j in enumerate(nearest_neighbor_indexes):
-#             if mention.mention_id != mentions[j].mention_id:
-#         #        neighbour_num=neighbour_num+1
-#                 #nearest_neighbors.add(frozenset([mention, mentions[j]]))
-#                 nearest_neighbors.append([mention, mentions[j]])
-            
-#         #        print('Neighbour ',neighbour_num)
-#         #        print('trigger_1:',mention.get_tokens())
-#         #        print('trigger_2:',mentions[j].get_tokens())
-#         #        print('--------------------')
-#         #print('--------delimiter---------')
-                
-#         pairs.extend(nearest_neighbors)
-    
-#     return pairs
-#-----------------------------------------------------------------------------#
-
-#----------------------------------------------#
-#我们提出的采样方法：对于每个mention，取5个难分的negative samples；以及5个难分的positive samples
-def retrieve_hard_pairs(data, model, k=10, events=True, remove_singletons=False,is_train=True):
-    vectors, labels, mentions = build_mention_reps(
-        data, model, events, remove_singletons=remove_singletons)
-    index = faiss.IndexFlatIP(1536)
-    index.add(vectors)
-    D, I = index.search(vectors, k + 1)
-    hard_coref_pairs = set()
-    hard_non_coref_pairs = set()
-    all_hard_pairs=set()
-    
-    if is_train==True:
-        for i, mention in enumerate(mentions):#遍历3808个mentions
-            nearest_neighbor_indexes = I[i]#得到第i个mention的所有邻居,相似度从高到低排序
-            reversed_nearest_neighbor_indexes=list(reversed(nearest_neighbor_indexes))[1:]
-            nearest_neighbors_coref = set()
-            nearest_neighbors_non_coref = set()
-            count_1=0
-            count_2=0
-            #Collect hard non coref examples
-            for nn_index, j in enumerate(nearest_neighbor_indexes):#
-                if count_1==k:
-                    break
-                else:
-                    if mention.mention_id != mentions[j].mention_id and mention.gold_tag!=mentions[j].gold_tag:
-                        nearest_neighbors_non_coref.add(frozenset([mention, mentions[j]]))
-                        count_1=count_1+1
-                    else:
-                        continue
-            #Collect hard coref examples            
-            for fn_index, fn_j in enumerate(reversed_nearest_neighbor_indexes):#
-                if count_2==k:
-                    break
-                else:
-                    if mention.mention_id != mentions[fn_j].mention_id and mention.gold_tag==mentions[fn_j].gold_tag:
-                        nearest_neighbors_coref.add(frozenset([mention, mentions[fn_j]]))
-                        count_2=count_2+1
-                    else:
-                        continue   
-            all_hard_pairs=(all_hard_pairs|nearest_neighbors_non_coref)|nearest_neighbors_coref
-            hard_non_coref_pairs = hard_non_coref_pairs | nearest_neighbors_non_coref
-            hard_coref_pairs = hard_coref_pairs | nearest_neighbors_coref        
-         
-    elif is_train==False:
-        for i, mention in enumerate(mentions):#遍历3808个mentions
-            nearest_neighbor_indexes = I[i]#得到第i个mention的所有邻居,相似度从高到低排序
-            reversed_nearest_neighbor_indexes=list(reversed(nearest_neighbor_indexes))[1:]
-            nearest_neighbors_coref = set()
-            nearest_neighbors_non_coref = set()
-            count_1=0
-            count_2=0
-            #Collect hard non coref examples
-            for nn_index, j in enumerate(nearest_neighbor_indexes):#
-                if count_1==k:
-                    break
-                else:
-                    if mention.mention_id != mentions[j].mention_id:
-                        nearest_neighbors_non_coref.add(frozenset([mention, mentions[j]]))
-                        count_1=count_1+1
-                    else:
-                        continue
-            #Collect hard coref examples            
-            for fn_index, fn_j in enumerate(reversed_nearest_neighbor_indexes):#
-                if count_2==k:
-                    break
-                else:
-                    if mention.mention_id != mentions[fn_j].mention_id:
-                        nearest_neighbors_coref.add(frozenset([mention, mentions[fn_j]]))
-                        count_2=count_2+1
-                    else:
-                        continue           
-            all_hard_pairs=(all_hard_pairs|nearest_neighbors_non_coref)|nearest_neighbors_coref
-            hard_non_coref_pairs = hard_non_coref_pairs | nearest_neighbors_non_coref
-            hard_coref_pairs = hard_coref_pairs | nearest_neighbors_coref
-    return all_hard_pairs,hard_non_coref_pairs,hard_coref_pairs
-#-------------------------------------------------------#
-
 
 def nn_eval(eval_data, model, k=5):
-    '''
-    eval_data：待评价数据（train_data/eval_data/test_data）
-    model: bi-encoder模型
-    k=5的情形
+    '''Evaluating the retrival performance 
     '''
     vectors, labels, _ = build_mention_reps(dataset_to_docs(eval_data),
                                             model,
@@ -425,22 +228,22 @@ def nn_eval(eval_data, model, k=5):
     tp = 0
     precision = 0
     singletons = 0
-    #[[labels[i] for i in row] for row in I]中的每一个元素是一个list，这个list保存了某个mention对应本身，以及K个neighbours
-    #的事件标签信息。eg:（‘riots’，‘ACT17819737684267059’）
+    # [labels[i] for i in row] contains event embeddings of such event-mention and its nearest-K neighbours
     for results in [[labels[i] for i in row] for row in I]:
-        original_str, true_label = results[0]#original_str, true_label 保存了该mention本身的head lemma和gold_tag
-        if "Singleton" in true_label:#若当前mention是个"Singleton"
-            singletons += 1#singletons计数+1
+        original_str, true_label = results[0]
+        if "Singleton" in true_label:
+            singletons += 1
             continue
-        matches = results[1:]#所有neighbours对应的信息
-        relevance = [label == true_label for _, label in matches]#看neighbours和当前label的匹配情况，匹配则返回1，不匹配则返回0
-        num_correct = np.sum(relevance)#看看仅仅通过聚类，一个neighbours内能分对几个
-        precision += num_correct / k#可以理解为mention邻域内的k个neighbours都预测为与mention同类别。于是可以计算出该mention对应的precision
-        if num_correct >= 1:#只要邻域中的5个neighbours至少有一个预测正确
-            tp += 1  #tp计数加一
+        matches = results[1:]# all passengers 
+        #See each retrieved passenger matches the label or not 
+        relevance = [label == true_label for _, label in matches]
+        num_correct = np.sum(relevance) 
+        precision += num_correct / k
+        #When at least one mention in a neighbourhood is retrieved correctly
+        if num_correct >= 1:
+            tp += 1  
         relevance_matrix.append(relevance)
-    
-    #分别得到recall，mean_reciprocal_rank, mean_average_precision,mean_precision_k四个评价指标
+    #Finally, we have metrics: recall，mean_reciprocal_rank, mean_average_precision,mean_precision_k
     return (tp / float(len(I) - singletons),
             mean_reciprocal_rank(relevance_matrix),
             mean_average_precision(relevance_matrix),

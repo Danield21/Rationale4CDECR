@@ -74,7 +74,7 @@ parser.add_argument('--gpu_num',
 args = parser.parse_args()
 assert args.mode in ['train', 'eval'], "mode must be train or eval!"
 # In the `train' mode, the best model and the evaluation results of the dev corpus are saved.
-# In the `test' mode, evaluation results of the test corpus are saved.
+# In the `eval' mode, evaluation results of the test corpus are saved.
 
 
 with open(args.config_path, 'r') as js_file:
