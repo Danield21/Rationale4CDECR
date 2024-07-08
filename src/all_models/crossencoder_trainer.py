@@ -631,6 +631,8 @@ def train_model(df,dev_set):
             tr_a += accuracy.item()
             if ((step + 1) * config_dict["batch_size"]
                 ) % config_dict["accumulated_batch_size"] == 0:
+                # For main exp, we set batch_size as 10, accumulated_batch_size as 8. 
+                # This should be equivalent to the case of batch_size being 40 and accumulated_batch_size being 8  
                 batcher.set_description(
                     "Batch (average loss: {:.6f} precision: {:.6f} accuracy: {:.6f})"
                     .format(
@@ -643,14 +645,6 @@ def train_model(df,dev_set):
                 optimizer.step()
                 scheduler.step()
                 optimizer.zero_grad()
-            #record the training results of each batch step 
-            # writer.add_scalar('epoch{}/average_loss'.format(epoch_idx),tr_loss/float(step + 1), step)
-            # writer.add_scalar('epoch{}/average_precision'.format(epoch_idx),tr_p/float(step + 1), step)
-            # writer.add_scalar('epoch{}/average_accuracy'.format(epoch_idx),tr_a/float(step + 1), step)
-        # 
-        # writer.add_scalar('average_loss',tr_loss/float(step + 1), epoch_idx)
-        # writer.add_scalar('average_precision',tr_p/float(step + 1), epoch_idx)
-        # writer.add_scalar('average_accuracy',tr_a/float(step + 1), epoch_idx)        
         evaluate(model, event_encoder, dev_dataloader, dev_pairs, dev_docs,
                  epoch_idx)
 def main():
