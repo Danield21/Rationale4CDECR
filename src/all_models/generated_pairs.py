@@ -50,8 +50,11 @@ parser.add_argument('--gpu_num',
 
 args = parser.parse_args()
 out_dir = args.out_dir
-if not os.path.exists(out_dir):
-    os.makedirs(out_dir)
+# if not os.path.exists(out_dir):
+#     os.makedirs(out_dir)
+logging.basicConfig(format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s',
+                    level=logging.DEBUG)
+
 with open(args.config_path, 'r') as js_file:
     config_dict = json.load(js_file)
 
@@ -140,6 +143,10 @@ def generate_mention_pairs(data_set,
 def main():
     assert args.dataset in ['ecb','fcc','gvc'], 'Not consider such dataset.'
     assert args.data_split in ['train','dev','test'], 'Incorrect data split.'
+    assert args.dataset in args.encoder_model_path, f'Use inconsistent event_encoder to {args.dataset}'
+    assert args.data_split in args.dataset_path, f'Use inconsistent dataset_path to {args.data_split}'
+    
+    
     if not os.path.exists(args.dataset_path):
         raise Exception('Please check dataset_path!')
     logging.info('Loading into data...')
@@ -157,15 +164,21 @@ def main():
     logging.info('event_encoder has been loaded.')
 
     #generate mention pairs
+    logging.info(f'Retrieving nearest-${args.mention_pairs_num} event mention pairs')
     pairs=generate_mention_pairs(data,event_encoder,events=args.events_or_not,
                                  k=args.mention_pairs_num)
     #save pickle file for pairs
     if args.data_split == 'train':
-        save_file_path = os.path.join(args.out_dir, f'{args.dataset}/{args.data_split}/baseline/{args.data_split}_pairs')
+        save_folder = os.path.join(args.out_dir, f'{args.dataset}/{args.data_split}/baseline')
     else:
-        save_file_path = os.path.join(args.out_dir, f'{args.dataset}/{args.data_split}/{args.data_split}_pairs')
+        save_folder = os.path.join(args.out_dir, f'{args.dataset}/{args.data_split}')
+    if not os.path.exists(save_folder):
+        os.makedirs(save_folder)
+
+    save_file_path = os.path.join(save_folder, f'{args.data_split}_pairs')
     with open(save_file_path, "wb") as p:
         pickle.dump(pairs, p)
+    logging.info(f'Saved retrieved mention pairs')
 
 if __name__ == '__main__':
     main()

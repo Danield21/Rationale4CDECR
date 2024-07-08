@@ -64,11 +64,7 @@ parser.add_argument('--gpu_num',
                     type=int,
                     default=0,
                     help=' A single GPU number')
-# # tensorboard visialize
-# parser.add_argument('--visual',
-#                     dest='tensorboard',
-#                     action='store_true',
-#                     help='use tensorboard to record training dynamics')
+
 
 # load all config parameters for training 
 args = parser.parse_args()
@@ -84,12 +80,6 @@ with open(args.config_path, 'r') as js_file:
 out_dir = args.out_dir
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
-
-# if args.visual:
-tensorboard_path=os.path.join(args.out_dir,f'{args.mode}_logs')
-if not os.path.exists(tensorboard_path):
-    os.makedirs(tensorboard_path)
-# writer = SummaryWriter(tensorboard_path)
 
 
 # save basicConfig log
@@ -126,14 +116,14 @@ tokenizer = RobertaTokenizer.from_pretrained("roberta-base") # tokenizer
 
 # use train/dev data in 'train' mode, and use test data in 'eval' mode
 print('Loading fixed dev set')
-ecb_dev_set=pd.read_pickle('retrieved_data/main_exp/ecb/dev/dev_pairs')
-fcc_dev_set=pd.read_pickle('retrieved_data/main_exp/fcc/dev/dev_pairs')
-gvc_dev_set=pd.read_pickle('retrieved_data/main_exp/gvc/dev/dev_pairs')
+ecb_dev_set=pd.read_pickle('retrieved_data/main/ecb/dev/dev_pairs')
+fcc_dev_set=pd.read_pickle('retrieved_data/main/fcc/dev/dev_pairs')
+gvc_dev_set=pd.read_pickle('retrieved_data/main/gvc/dev/dev_pairs')
 
 print('Loading fixed test set')
-ecb_test_set=pd.read_pickle('retrieved_data/main_exp/ecb/test/test_pairs')
-fcc_test_set=pd.read_pickle('retrieved_data/main_exp/fcc/test/test_pairs')
-gvc_test_set=pd.read_pickle('retrieved_data/main_exp/gvc/test/test_pairs')
+ecb_test_set=pd.read_pickle('retrieved_data/main/ecb/test/test_pairs')
+fcc_test_set=pd.read_pickle('retrieved_data/main/fcc/test/test_pairs')
+gvc_test_set=pd.read_pickle('retrieved_data/main/gvc/test/test_pairs')
 
 nn_generated_fixed_eval_pairs={
     'ecb':
