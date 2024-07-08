@@ -4,7 +4,7 @@
     "early_stop_patience": 5,
     "epochs": 40,
     "eval_model_path": "outputs/ablation_study/TAD/best_model/AD_crossencoder_best_model",
-    "event_encoder_model": "models/ecb_events_seed5_original/candidate_generator_best_model",
+    "event_encoder_model": "outputs/bi_encoder/ecb_events_seed5_original/candidate_generator_best_model",
     "gpu_num": 0,
     "lr": 1e-05,
     "max_grad_norm": 1.0,

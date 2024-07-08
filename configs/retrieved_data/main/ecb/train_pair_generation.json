@@ -1,6 +1,6 @@
 {
     "dataset_path":"./feature_sets/all_sents/training_data",
-    "encoder_model_path":"./models/ecb_events_seed5_original/candidate_generator_best_model",
+    "encoder_model_path":"./outputs/bi_encoder/ecb_events_seed5_original/candidate_generator_best_model",
     "events":true,
     "mention_pairs_num":15,
     "remove_singletons":false,

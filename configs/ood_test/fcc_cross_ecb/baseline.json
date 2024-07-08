@@ -4,7 +4,7 @@
     "early_stop_patience": 5,
     "epochs": 40,
     "eval_model_path": "AugmentedData/fcc_events_ratio_0_bz2_seed5/AD_crossencoder_best_model",
-    "event_encoder_model": "models/fcc_events_seed5_original/candidate_generator_best_model",
+    "event_encoder_model": "outputs/bi_encoder/fcc_events_seed5_original/candidate_generator_best_model",
     "gpu_num": 0,
     "lr": 1e-05,
     "max_grad_norm": 1.0,
