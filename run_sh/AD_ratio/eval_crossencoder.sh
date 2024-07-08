@@ -15,5 +15,5 @@ fi
 
 echo "Eval crossencoder"
 
-nohup python -u src/all_models/crossencoder_trainer.py --config_path ${config} --out_dir ${out_dir}\
+nohup python -u src/all_models/crossencoder_trainer.py --config_path ${config_path} --out_dir ${out_dir}\
     --mode eval --random_seed ${random_seed} --gpu_num ${gpu_num} >${out_dir}/crossencoder.log 2>${out_dir}/crossencoder.progress &
